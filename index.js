@@ -1,8 +1,23 @@
 const express = require("express")
+const fs = require("fs")
+const process = require("process")
+const bodyParser = require("body-parser")
 const app = express()
+  
+app.use(bodyParser.urlencoded({
+    extended:true
+}));
 
+app.get('/', (request, response) => {              
+  fs.readFile('views/index.html', 'utf-8', (err, html) =>{
+      if (err){
+          response.status(500).send('sorry, server out of service');
+      }              
+  })
+});  
+  
 app.get("/books", (req, res, next) => {
-    const obj = [
+    const h_obj = [
         {
           "author": "Chinua Achebe",
           "country": "Nigeria",
@@ -1004,7 +1019,7 @@ app.get("/books", (req, res, next) => {
           "year": 1951
         }
       ];
-    res.json(obj);
+    res.json(h_obj);
 });
 
 app.listen(8080, ()=> { console.log("Server started at 8080") })
